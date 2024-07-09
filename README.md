@@ -1,5 +1,7 @@
 # miyoko бот
 
+<img src="pic.png" alt="pic"/>
+
 Telegram-бот для сообщества Priscilla FX
 
 ## Установка
