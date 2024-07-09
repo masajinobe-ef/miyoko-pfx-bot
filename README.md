@@ -1,8 +1,6 @@
-# miyoko-pfx-bot
-
-Telegram bot for PriscillaFX Community
-
 # miyoko бот
+
+Telegram-бот для сообщества Priscilla FX
 
 ## Установка
 
