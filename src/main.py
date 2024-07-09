@@ -42,42 +42,46 @@ def is_valid_message(message: types.Message):
     )
 
 
-# Event /help
-@dp.message(Command(commands=['help']))
-async def send_help(message: types.Message):
+# Helper function to process commands
+async def process_command(message: types.Message, command: str, response: str):
     if not is_valid_message(message) or not message.text.startswith('/'):
         return
     logger.info(
-        f'✉️ Получена команда: /help от {message.from_user.username} ({message.from_user.id})'
+        f'✉️ Получена команда: /{command} от {message.from_user.username} ({message.from_user.id})'
     )
-    help_text = (
-        'Доступные команды:\n\n'
-        '/help - Список команд\n'
-        '/info - Полезная информация'
-    )
-    await message.reply(help_text, parse_mode=ParseMode.HTML)
+    await message.reply(response, parse_mode=ParseMode.HTML)
+
+
+# Command responses
+help_text = (
+    'Доступные команды:\n\n'
+    '/help - Список команд\n'
+    '/info - Полезная информация'
+)
+
+info_text = (
+    '✉️ Связаться с нами: https://t.me/masaji_ef\n\n'
+    '❔ Часто задаваемые вопросы: https://priscillafx.ru/faq\n\n'
+    '▇ Официальный сайт: https://priscilla-custom-effects.github.io/\n\n'
+    '▇ Социальные сети:\n'
+    '- VK: https://vk.com/priscilla_ef\n'
+    '- Instagram: https://www.instagram.com/masajinobe\n'
+    '- Twitter: https://twitter.com/priscilla_eF\n'
+    '- GitHub: https://github.com/Priscilla-Custom-Effects\n'
+    '- YouTube: https://www.youtube.com/@priscilla_eF'
+)
+
+
+# Event /help
+@dp.message(Command(commands=['help']))
+async def send_help(message: types.Message):
+    await process_command(message, 'help', help_text)
 
 
 # Event /info
 @dp.message(Command(commands=['info']))
 async def send_info(message: types.Message):
-    if not is_valid_message(message) or not message.text.startswith('/'):
-        return
-    logger.info(
-        f'✉️ Получена команда: /info от {message.from_user.username} ({message.from_user.id})'
-    )
-    info_text = (
-        '✉️ Связаться с нами: https://t.me/masaji_ef\n\n'
-        + '❔ Часто задаваемые вопросы: https://priscillafx.ru/faq\n\n'
-        + '▇ Официальный сайт: https://priscilla-custom-effects.github.io/\n\n'
-        + '▇ Социальные сети:\n'
-        + '- VK: https://vk.com/priscilla_ef\n'
-        + '- Instagram: https://www.instagram.com/masajinobe\n'
-        + '- Twitter: https://twitter.com/priscilla_eF\n'
-        + '- GitHub: https://github.com/Priscilla-Custom-Effects\n'
-        + '- YouTube: https://www.youtube.com/@priscilla_eF'
-    )
-    await message.reply(info_text, parse_mode=ParseMode.HTML)
+    await process_command(message, 'info', info_text)
 
 
 # Unknown commands
