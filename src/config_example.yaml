@@ -1,6 +1,7 @@
 bot:
   token: ""
   chat_id: -100
+  topic_id: 1
 
 youtube:
   api_key: ""

@@ -15,7 +15,7 @@ from aiogram.filters import Command
 from logger import logger
 
 # Parser
-from parser import check_new_videos
+# from parser import check_new_videos
 
 
 # Config file
@@ -24,6 +24,7 @@ with open('config.yaml', 'r') as file:
 
 API_TOKEN = config['bot']['token']
 CHAT_ID = config['bot']['chat_id']
+TOPIC_ID = int(config['bot']['topic_id'])
 
 
 # Init Bot
@@ -33,9 +34,19 @@ bot = Bot(
 dp = Dispatcher()
 
 
+# Function to check if the message is from the correct chat and topic
+def is_valid_message(message: types.Message):
+    return (
+        message.chat.id == CHAT_ID
+        and getattr(message, 'message_thread_id', None) == TOPIC_ID
+    )
+
+
 # Event /help
 @dp.message(Command(commands=['help']))
 async def send_help(message: types.Message):
+    if not is_valid_message(message) or not message.text.startswith('/'):
+        return
     logger.info(
         f'✉️ Получена команда: /help от {message.from_user.username} ({message.from_user.id})'
     )
@@ -50,6 +61,8 @@ async def send_help(message: types.Message):
 # Event /info
 @dp.message(Command(commands=['info']))
 async def send_info(message: types.Message):
+    if not is_valid_message(message) or not message.text.startswith('/'):
+        return
     logger.info(
         f'✉️ Получена команда: /info от {message.from_user.username} ({message.from_user.id})'
     )
@@ -70,6 +83,8 @@ async def send_info(message: types.Message):
 # Unknown commands
 @dp.message()
 async def echo(message: types.Message):
+    if not is_valid_message(message) or not message.text.startswith('/'):
+        return
     logger.info(
         f'⚠️ Нераспознанная команда: {message.text} от {message.from_user.username}'
     )
@@ -85,7 +100,8 @@ async def main():
 
         # Start polling and YouTube video checking concurrently
         await asyncio.gather(
-            dp.start_polling(bot), check_new_videos(bot, chat_id=CHAT_ID)
+            dp.start_polling(bot),
+            # check_new_videos(bot, chat_id=CHAT_ID)
         )
 
     except (KeyboardInterrupt, SystemExit):
