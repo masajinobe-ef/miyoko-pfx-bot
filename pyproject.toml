@@ -1,7 +1,8 @@
+# Poetry
 [tool.poetry]
 name = "miyoko"
 version = "0.1.0"
-description = "Telegram bot for PriscillaFX Community"
+description = "Telegram bot for Priscilla FX Community"
 authors = ["masajinobe-ef <priscilla.effects@gmail.com>"]
 license = "GPL-3.0"
 readme = "README.md"
@@ -13,22 +14,20 @@ aiogram = "^3.10.0"
 loguru = "^0.7.2"
 pyyaml = "^6.0.1"
 google-api-python-client = "^2.136.0"
+requests = "^2.32.3"
 
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
+# Ruff
 [tool.ruff]
 line-length = 79
 indent-width = 4
-
-
-[tool.ruff.lint]
-ignore = ["F403"]
-
 
 [tool.ruff.format]
 quote-style = "single"
 indent-style = "space"
 
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.ruff.lint]
+ignore = ["F403"]

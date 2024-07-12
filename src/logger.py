@@ -8,28 +8,31 @@ from datetime import datetime
 from loguru import logger
 
 
-def get_current_date():
+def now():
     return datetime.now().strftime('%d-%m-%Y')
 
 
+# INFO
 logger.add(
-    f'logs/{get_current_date()}_miyoko.log',
-    rotation='00:00',
-    retention='1 day',
-    level='ERROR',
-    format='{time:DD/MM/YYYY HH:mm:ss} | {level} | {message}',
-)
-
-logger.add(
-    f'logs/{get_current_date()}_miyoko.log',
+    f'logs/{now()}_miyoko.log',
     rotation='00:00',
     retention='1 day',
     level='INFO',
     format='{time:DD/MM/YYYY HH:mm:ss} | {level} | {message}',
 )
 
+# Error
 logger.add(
-    f'logs/{get_current_date()}_miyoko.log',
+    f'logs/{now()}_miyoko.log',
+    rotation='00:00',
+    retention='1 day',
+    level='ERROR',
+    format='{time:DD/MM/YYYY HH:mm:ss} | {level} | {message}',
+)
+
+# WARNING
+logger.add(
+    f'logs/{now()}_miyoko.log',
     rotation='00:00',
     retention='1 day',
     level='WARNING',

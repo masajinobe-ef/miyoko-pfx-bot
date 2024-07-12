@@ -1,4 +1,4 @@
-src/config.yaml
+src/configs/config.yaml
 src/logs
 
 # Byte-compiled / optimized / DLL files

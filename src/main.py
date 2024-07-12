@@ -2,39 +2,35 @@
 Written by masajinobe-ef
 """
 
+from datetime import datetime
 import asyncio
-import yaml
 
 # Aiogram
 from aiogram import Bot, Dispatcher, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import Command
 
 # Loguru
 from logger import logger
 
-# Parser
-# from parser import check_new_videos
+# Конфигурация
+from config import API_TOKEN, CHAT_ID, TOPIC_ID, RSS_TOPIC_ID, DOMAINS
+
+# YouTube парсер
+from src.parsers.youtube import check_new_videos
+
+# VK парсер
+from src.parsers.vk import check_new_posts
 
 
-# Config file
-with open('config.yaml', 'r') as file:
-    config = yaml.safe_load(file)
-
-API_TOKEN = config['bot']['token']
-CHAT_ID = config['bot']['chat_id']
-TOPIC_ID = int(config['bot']['topic_id'])
-
-
-# Init Bot
+# Инициализация бота и диспетчера
 bot = Bot(
     token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 dp = Dispatcher()
 
 
-# Function to check if the message is from the correct chat and topic
+# Функция проверки сообщений из правильного чата и темы
 def is_valid_message(message: types.Message):
     return (
         message.chat.id == CHAT_ID
@@ -42,74 +38,29 @@ def is_valid_message(message: types.Message):
     )
 
 
-# Helper function to process commands
-async def process_command(message: types.Message, command: str, response: str):
-    if not is_valid_message(message) or not message.text.startswith('/'):
-        return
-    logger.info(
-        f'✉️ Получена команда: /{command} от {message.from_user.username} ({message.from_user.id})'
-    )
-    await message.reply(response, parse_mode=ParseMode.HTML)
-
-
-# Command responses
-help_text = (
-    'Доступные команды:\n\n'
-    '/help - Список команд\n'
-    '/info - Полезная информация'
-)
-
-info_text = (
-    '✉️ Связаться с нами: https://t.me/masaji_ef\n\n'
-    '❔ Часто задаваемые вопросы: https://priscillafx.ru/faq\n\n'
-    '▇ Официальный сайт: https://priscilla-custom-effects.github.io/\n\n'
-    '▇ Социальные сети:\n'
-    '- VK: https://vk.com/priscilla_ef\n'
-    '- Instagram: https://www.instagram.com/masajinobe\n'
-    '- Twitter: https://twitter.com/priscilla_eF\n'
-    '- GitHub: https://github.com/Priscilla-Custom-Effects\n'
-    '- YouTube: https://www.youtube.com/@priscilla_eF'
-)
-
-
-# Event /help
-@dp.message(Command(commands=['help']))
-async def send_help(message: types.Message):
-    await process_command(message, 'help', help_text)
-
-
-# Event /info
-@dp.message(Command(commands=['info']))
-async def send_info(message: types.Message):
-    await process_command(message, 'info', info_text)
-
-
-# Unknown commands
-@dp.message()
-async def echo(message: types.Message):
-    if not is_valid_message(message) or not message.text.startswith('/'):
-        return
-    logger.info(
-        f'⚠️ Нераспознанная команда: {message.text} от {message.from_user.username}'
-    )
-    await message.reply(
-        '⚠️ Неизвестная команда. Напишите /help для получения списка команд.',
-        parse_mode=ParseMode.HTML,
-    )
-
-
+# Цикл приложения
 async def main():
     try:
-        logger.info('Запущен!')
+        now = datetime.now()
+        formatted_date = now.strftime('%d/%m/%Y %H:%M:%S')
+        logger.info(f'✔️ Запущен! {formatted_date}')
 
-        # Start polling and YouTube video checking concurrently
         await asyncio.gather(
+            # Опрос бота
             dp.start_polling(bot),
-            # check_new_videos(bot, chat_id=CHAT_ID)
+            # Проверка видео на YouTube
+            check_new_videos(bot, chat_id=CHAT_ID, rss_topic_id=RSS_TOPIC_ID),
+            # Проверка постов в VK
+            check_new_posts(
+                bot,
+                chat_id=CHAT_ID,
+                rss_topic_id=RSS_TOPIC_ID,
+                domains=DOMAINS,
+            ),
         )
 
     except (KeyboardInterrupt, SystemExit):
-        logger.warning('Отстановлен!')
+        logger.warning(f'⚠️ Отстановлен! {formatted_date}')
 
 
 if __name__ == '__main__':
