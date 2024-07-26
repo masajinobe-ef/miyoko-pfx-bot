@@ -4,9 +4,9 @@ Written by masajinobe-ef
 
 # Aiogram
 from aiogram.filters import Command
-from aiogram import types
 from aiogram.exceptions import TelegramNotFound
 from aiogram.enums import ParseMode
+from aiogram.types import Message
 
 # Loguru
 from logger import logger
@@ -19,7 +19,7 @@ from main import dp, is_valid_message
 
 
 # Вспомогательная функция для обработки команд
-async def process_command(message: types.Message, command: str, response: str):
+async def process_command(message: Message, command: str, response: str):
     if not is_valid_message(message) or not message.text.startswith('/'):
         return
 
@@ -37,7 +37,7 @@ async def process_command(message: types.Message, command: str, response: str):
 
 # Событие /help
 @dp.message(Command(commands=['help']))
-async def send_help(message: types.Message):
+async def send_help(message: Message):
     HELP_TEXT = (
         'Доступные команды:\n'
         '1. /help - Список команд\n'
@@ -48,7 +48,7 @@ async def send_help(message: types.Message):
 
 # Событие /info
 @dp.message(Command(commands=['info']))
-async def send_info(message: types.Message):
+async def send_info(message: Message):
     INFO_TEXT = (
         '✉️ [Связаться с нами](https://t.me/masaji_ef)\n'
         '❔ [Часто задаваемые вопросы](https://priscillafx.ru/faq)\n'
@@ -85,7 +85,7 @@ async def send_info(message: types.Message):
 
 # Неизвестная команда
 @dp.message()
-async def echo(message: types.Message):
+async def echo(message: Message):
     if not is_valid_message(message) or not message.text.startswith('/'):
         return
 

@@ -6,9 +6,10 @@ from datetime import datetime
 import asyncio
 
 # Aiogram
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.types import Message
 
 # Loguru
 from logger import logger
@@ -31,7 +32,7 @@ dp = Dispatcher()
 
 
 # Функция проверки сообщений из правильного чата и темы
-def is_valid_message(message: types.Message):
+def is_valid_message(message: Message):
     return (
         message.chat.id == CHAT_ID
         and getattr(message, 'message_thread_id', None) == TOPIC_ID
@@ -49,7 +50,9 @@ async def main():
             # Опрос бота
             dp.start_polling(bot),
             # Проверка видео на YouTube
-            # yt_check_new_videos(bot, chat_id=CHAT_ID, rss_topic_id=RSS_TOPIC_ID),
+            # yt_check_new_videos(
+            #     bot, chat_id=CHAT_ID, rss_topic_id=RSS_TOPIC_ID
+            # ),
             # Проверка постов в VK
             # vk_check_new_posts(
             #     bot,
