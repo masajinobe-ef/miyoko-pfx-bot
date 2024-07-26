@@ -17,10 +17,10 @@ from logger import logger
 from config import API_TOKEN, CHAT_ID, TOPIC_ID, RSS_TOPIC_ID, DOMAINS
 
 # YouTube парсер
-from src.parsers.youtube import check_new_videos
+from src.parsers.youtube import check_new_videos as yt_check_new_videos
 
 # VK парсер
-from src.parsers.vk import check_new_posts
+from src.parsers.vk import check_new_posts as vk_check_new_posts
 
 
 # Инициализация бота и диспетчера
@@ -49,14 +49,14 @@ async def main():
             # Опрос бота
             dp.start_polling(bot),
             # Проверка видео на YouTube
-            check_new_videos(bot, chat_id=CHAT_ID, rss_topic_id=RSS_TOPIC_ID),
+            # yt_check_new_videos(bot, chat_id=CHAT_ID, rss_topic_id=RSS_TOPIC_ID),
             # Проверка постов в VK
-            check_new_posts(
-                bot,
-                chat_id=CHAT_ID,
-                rss_topic_id=RSS_TOPIC_ID,
-                domains=DOMAINS,
-            ),
+            # vk_check_new_posts(
+            #     bot,
+            #     chat_id=CHAT_ID,
+            #     rss_topic_id=RSS_TOPIC_ID,
+            #     domains=DOMAINS,
+            # ),
         )
 
     except (KeyboardInterrupt, SystemExit):

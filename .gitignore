@@ -1,5 +1,6 @@
 src/configs/config.yaml
 src/logs
+poetry.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
