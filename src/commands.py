@@ -14,6 +14,9 @@ from logger import logger
 # Зависимость от main.py
 from main import dp, is_valid_message
 
+# BPM to ms
+# from func.bpmtoms import bpm_to_ms
+
 
 # Вспомогательная функция для обработки команд
 async def process_command(message: types.Message, command: str, response: str):
@@ -58,6 +61,26 @@ async def send_info(message: types.Message):
         '⚪ [YouTube](https://www.youtube.com/@priscilla_eF)'
     )
     await process_command(message, 'info', INFO_TEXT)
+
+
+# Событие /ms
+# @dp.message(Command(commands=['ms']))
+# async def send_ms(message: types.Message):
+#     match = re.search(r'/ms\s+(\d+)', message.text)
+#     if not match:
+#         await message.reply(
+#             'Пожалуйста, предоставьте BPM значение после команды /ms, например: /ms 120'
+#         )
+#         return
+
+#     bpm = int(match.group(1))
+#     note_durations = bpm_to_ms(bpm)
+
+#     response_text = 'Значения длительности нот для BPM = {}:\n'.format(bpm)
+#     for note, duration in note_durations.items():
+#         response_text += f'{note}: {duration:.2f} ms\n'
+
+#     await process_command(message, 'ms', response_text)
 
 
 # Неизвестная команда

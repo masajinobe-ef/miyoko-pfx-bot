@@ -17,10 +17,10 @@ from logger import logger
 from config import API_TOKEN, CHAT_ID, TOPIC_ID, RSS_TOPIC_ID, DOMAINS
 
 # YouTube парсер
-from src.parsers.youtube import check_new_videos as yt_check_new_videos
+# from parsers.youtube import check_new_videos as yt_check_new_videos
 
 # VK парсер
-from src.parsers.vk import check_new_posts as vk_check_new_posts
+# from parsers.vk import check_new_posts as vk_check_new_posts
 
 
 # Инициализация бота и диспетчера
