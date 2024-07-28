@@ -2,27 +2,20 @@
 Written by masajinobe-ef
 """
 
-from datetime import datetime
 import asyncio
+from datetime import datetime
 
 # Aiogram
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import Message
 
+# Обработчик
+import handlers
+# Конфигурация
+from config import API_TOKEN
 # Loguru
 from logger import logger
-
-# Конфигурация
-from config import API_TOKEN, CHAT_ID, TOPIC_ID, RSS_TOPIC_ID, DOMAINS
-
-# YouTube парсер
-# from parsers.youtube import check_new_videos as yt_check_new_videos
-
-# VK парсер
-# from parsers.vk import check_new_posts as vk_check_new_posts
-
 
 # Инициализация бота и диспетчера
 bot = Bot(
@@ -31,20 +24,15 @@ bot = Bot(
 dp = Dispatcher()
 
 
-# Функция проверки сообщений из правильного чата и темы
-def is_valid_message(message: Message):
-    return (
-        message.chat.id == CHAT_ID
-        and getattr(message, 'message_thread_id', None) == TOPIC_ID
-    )
-
-
 # Цикл приложения
 async def main():
     try:
         now = datetime.now()
         formatted_date = now.strftime('%d/%m/%Y %H:%M:%S')
         logger.info(f'✔️ Запущен! {formatted_date}')
+
+        # Регистрация обработчика команд
+        handlers.register_handlers(dp)
 
         await asyncio.gather(
             # Опрос бота
@@ -61,7 +49,6 @@ async def main():
             #     domains=DOMAINS,
             # ),
         )
-
     except (KeyboardInterrupt, SystemExit):
         logger.warning(f'⚠️ Отстановлен! {formatted_date}')
 

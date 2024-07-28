@@ -2,21 +2,19 @@
 Written by masajinobe-ef
 """
 
-import time
 import asyncio
-import yaml
 import os
+import time
 
-# Loguru
-from logger import logger
-
+import yaml
 # Google
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # Конфигурация
 from config import YOUTUBE_API_KEY
-
+# Loguru
+from logger import logger
 
 # Инициализация YouTube API
 youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
@@ -37,7 +35,6 @@ def load_last_videos():
                 }
         else:
             return {channel: None for channel in channels_config['channels']}
-
     except Exception as e:
         logger.warning(f'Не удалось загрузить последние видео из файла: {e}')
         return {channel: None for channel in channels_config['channels']}
@@ -48,7 +45,6 @@ def save_last_videos(last_videos):
     try:
         with open(LAST_VIDEOS_FILE, 'w') as file:
             yaml.safe_dump(last_videos, file)
-
     except Exception as e:
         logger.error(f'Ошибка при сохранении последних видео в файл: {e}')
 
@@ -75,7 +71,6 @@ async def check_new_videos(bot, chat_id, rss_topic_id):
                     )
                     search_response = search_request.execute()
                     latest_video = search_response['items'][0]
-
                     video_id = latest_video['id']['videoId']
                     video_title = latest_video['snippet']['title']
                     video_url = f'https://www.youtube.com/watch?v={video_id}'
@@ -85,15 +80,12 @@ async def check_new_videos(bot, chat_id, rss_topic_id):
                     video_published_time = time.mktime(
                         time.strptime(video_published_at, '%Y-%m-%dT%H:%M:%SZ')
                     )
-
                     if (
                         current_time - video_published_time
                     ) > 7 * 24 * 60 * 60:
                         continue  # Пропустить отправку старого видео
-
                     if last_videos.get(channel_id) == video_id:
                         continue  # Пропустить повторную отправку того же видео
-
                     last_videos[channel_id] = video_id
                     await bot.send_message(
                         chat_id=chat_id,
@@ -119,9 +111,7 @@ async def check_new_videos(bot, chat_id, rss_topic_id):
                         )
                 except Exception as err:
                     logger.error(f'🚫 Ошибка при обработке данных: {err}')
-
             await asyncio.sleep(60)
-
     except Exception as e:
         logger.warning(
             f'🚫 Общая ошибка в цикле проверки новых видео Youtube: {e}'
