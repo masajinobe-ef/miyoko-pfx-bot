@@ -7,12 +7,14 @@ import os
 import time
 
 import yaml
+
 # Google
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # Конфигурация
 from config import YOUTUBE_API_KEY
+
 # Loguru
 from logger import logger
 

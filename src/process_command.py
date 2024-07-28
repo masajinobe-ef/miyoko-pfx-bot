@@ -8,6 +8,7 @@ from aiogram.types import Message
 
 # Конфигурация
 from config import CHAT_ID, DOMAINS, RSS_TOPIC_ID, TOPIC_ID
+
 # Loguru
 from logger import logger
 

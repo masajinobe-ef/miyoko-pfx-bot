@@ -12,8 +12,10 @@ from aiogram.enums import ParseMode
 
 # Обработчик
 import handlers
+
 # Конфигурация
 from config import API_TOKEN
+
 # Loguru
 from logger import logger
 

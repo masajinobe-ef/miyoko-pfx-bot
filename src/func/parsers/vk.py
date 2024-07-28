@@ -11,6 +11,7 @@ import yaml
 
 # Конфигурация
 from config import VK_API_TOKEN, VK_API_VERSION
+
 # Loguru
 from logger import logger
 
