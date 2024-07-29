@@ -3,14 +3,19 @@ Written by masajinobe-ef
 """
 
 # Aiogram
+from aiogram import Router
 from aiogram.enums import ParseMode
+from aiogram.filters import Command
 from aiogram.types import Message
 
-# Обработка команды
+# Commands processing
 from process_command import process_command
 
+router = Router()
 
-# Событие /ltsms
+
+# Event /ltsms
+@router.message(Command(commands='ltsms'))
 async def send_ltsms(message: Message):
     LTSMS_TEXT = (
         '*#4:*\n'
@@ -58,4 +63,5 @@ async def send_ltsms(message: Message):
         'i not crazy am you are\n'
         '夕景の記憶 | BPM83 / 361ms\n'
     )
-    await process_command(message, 'ltsms', LTSMS_TEXT, ParseMode.HTML)
+    PLACEHOLDER = 'placeholder'
+    await process_command(message, 'ltsms', PLACEHOLDER, ParseMode.HTML)

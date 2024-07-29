@@ -8,14 +8,19 @@ from datetime import datetime, timezone
 
 import requests
 import yaml
+# Aiogram
+from aiogram import Router
 
-# Конфигурация
+# Config
 from config import VK_API_TOKEN, VK_API_VERSION
-
 # Loguru
 from logger import logger
 
+router = Router()
 
+
+# Check new posts
+@router.message()
 async def check_new_posts(bot, domains, chat_id, rss_topic_id):
     try:
         sent_posts = set()

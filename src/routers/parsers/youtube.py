@@ -7,18 +7,20 @@ import os
 import time
 
 import yaml
-
+# Aiogram
+from aiogram import Router
 # Google
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-# Конфигурация
+# Config
 from config import YOUTUBE_API_KEY
-
 # Loguru
 from logger import logger
 
-# Инициализация YouTube API
+router = Router()
+
+# YouTube API
 youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
 with open('configs/yt-channels.yaml', 'r') as file:
@@ -27,7 +29,6 @@ with open('configs/yt-channels.yaml', 'r') as file:
 LAST_VIDEOS_FILE = 'temp/last_videos.yaml'
 
 
-# Функция для загрузки последних идентификаторов видео из файла
 def load_last_videos():
     try:
         if os.path.exists(LAST_VIDEOS_FILE):
@@ -42,7 +43,6 @@ def load_last_videos():
         return {channel: None for channel in channels_config['channels']}
 
 
-# Функция для сохранения временной метки последнего видео
 def save_last_videos(last_videos):
     try:
         with open(LAST_VIDEOS_FILE, 'w') as file:
@@ -51,14 +51,14 @@ def save_last_videos(last_videos):
         logger.error(f'Ошибка при сохранении последних видео в файл: {e}')
 
 
-# Загрузите последние идентификаторы видео
 last_videos = load_last_videos()
 
 
 MAX_QUOTA_RETRIES = 3
-QUOTA_RETRY_DELAY = 60  # Задержка в секундах перед повторной попыткой
+QUOTA_RETRY_DELAY = 60
 
 
+@router.message()
 async def check_new_videos(bot, chat_id, rss_topic_id):
     try:
         quota_retries = 0

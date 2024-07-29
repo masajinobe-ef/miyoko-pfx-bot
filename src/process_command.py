@@ -2,18 +2,18 @@
 Written by masajinobe-ef
 """
 
+# Aiogram
 from aiogram.enums import ParseMode
 from aiogram.exceptions import TelegramNotFound
 from aiogram.types import Message
 
-# Конфигурация
+# Config
 from config import CHAT_ID, DOMAINS, RSS_TOPIC_ID, TOPIC_ID
-
 # Loguru
 from logger import logger
 
 
-# Функция проверки сообщений из правильного чата и темы
+# Valid messages
 def is_valid_message(message: Message):
     return (
         message.chat.id == CHAT_ID
@@ -21,7 +21,7 @@ def is_valid_message(message: Message):
     )
 
 
-# Вспомогательная функция для обработки команд
+# Commands processing
 async def process_command(
     message: Message, command: str, response: str, parse_mode: ParseMode
 ):
@@ -38,7 +38,7 @@ async def process_command(
         )
 
 
-# Неизвестная команда
+# Unknown command
 async def echo(message: Message):
     if not is_valid_message(message) or not message.text.startswith('/'):
         return

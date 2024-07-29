@@ -3,26 +3,37 @@ Written by masajinobe-ef
 """
 
 # Aiogram
+from aiogram import Router
 from aiogram.enums import ParseMode
+from aiogram.filters import Command
 from aiogram.types import Message
 
-# Обработка команды
+# Commands processing
 from process_command import process_command
 
+router = Router()
 
-# Событие /help
+
+# Event /help
+@router.message(Command(commands='help'))
 async def send_help(message: Message):
     HELP_TEXT = (
-        'Доступные команды:\n'
-        '1. /help - Список команд\n'
-        '2. /info - Полезная информация\n'
-        '3. /ms - Расчёт миллисекунд delay на основе BPM\nПример: /ms 120\n'
-        '4. /ltsms - Delay база LTS\n'
+        'Информация:\n'
+        '⚪ /help - Список команд\n'
+        '⚪ /info - Полезная информация\n'
+        '⚪ /ltsms - Дилей база LTS\n'
+        '\n'
+        'Инструменты:\n'
+        '⚪/ms - Расчёт миллисекунд задержки на основе BPM\nПример: /ms 120\n'
+        '⚪/filter - Расчёт RC-фильтра\nПример: /filter 1.0k 1.0n\n'
+        '⚪/dbV - Конвертер db в V\nПример: /dbV 10.0\n'
+        '⚪/Vdb - Конвертер V в db\nПример: /Vdb 10.0\n'
     )
-    await process_command(message, 'help', HELP_TEXT, ParseMode.HTML)
+    await process_command(message, 'help', HELP_TEXT, ParseMode.MARKDOWN)
 
 
-# Событие /info
+# Event /info
+@router.message(Command(commands='info'))
 async def send_info(message: Message):
     INFO_TEXT = (
         '✉️ [Связаться с нами](https://t.me/masaji_ef)\n'
@@ -33,6 +44,6 @@ async def send_info(message: Message):
         '⚪ [Instagram](https://www.instagram.com/masajinobe)\n'
         '⚪ [Twitter](https://twitter.com/priscilla_eF)\n'
         '⚪ [GitHub](https://github.com/Priscilla-Custom-Effects)\n'
-        '⚪ [YouTube](https://www.youtube.com/@priscilla_eF)'
+        '⚪ [YouTube](https://www.youtube.com/@priscilla_eF)\n'
     )
     await process_command(message, 'info', INFO_TEXT, ParseMode.MARKDOWN)

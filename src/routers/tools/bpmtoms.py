@@ -3,11 +3,15 @@ Written by masajinobe-ef
 """
 
 # Aiogram
+from aiogram import Router
 from aiogram.enums import ParseMode
+from aiogram.filters import Command
 from aiogram.types import Message
 
-# Обработка команды
+# Commands processing
 from process_command import process_command
+
+router = Router()
 
 
 def bpm_to_ms(bpm):
@@ -23,7 +27,8 @@ def bpm_to_ms(bpm):
     return note_durations
 
 
-# Событие /ms
+# Event /ms
+@router.message(Command(commands='ms'))
 async def send_ms(message: Message):
     try:
         bpm = int(message.text.split()[1])
