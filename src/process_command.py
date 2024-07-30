@@ -8,7 +8,8 @@ from aiogram.exceptions import TelegramNotFound
 from aiogram.types import Message
 
 # Config
-from config import CHAT_ID, DOMAINS, RSS_TOPIC_ID, TOPIC_ID
+from config import CHAT_ID, TOPIC_ID
+
 # Loguru
 from logger import logger
 

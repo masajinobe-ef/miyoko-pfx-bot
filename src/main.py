@@ -16,10 +16,11 @@ from config import API_TOKEN
 from logger import logger
 # Routers
 from routers.cmds import info
-# from routers.parsers import vk, youtube
+from routers.parsers.livefans import livefans_affiche
+# from routers.parsers.sigure import sigure_info
 from routers.tools import bpmtoms, calcs, ltsms
 
-# Init Bot
+# Bot and Dispatcher
 bot = Bot(
     token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
@@ -39,8 +40,10 @@ async def main():
         (dp.include_router(ltsms.router),)
         (dp.include_router(bpmtoms.router),)
         # parsers
-        # dp.include_router(vk.router),
-        # dp.include_router(youtube.router),
+        asyncio.create_task(livefans_affiche(bot))
+        # asyncio.create_task(
+        #     sigure_info(bot),
+        # )
         await dp.start_polling(bot)
     except (KeyboardInterrupt, SystemExit):
         logger.warning(f'⚠️ Отстановлен! {formatted_date}')
