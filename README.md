@@ -32,13 +32,6 @@ bot:
   chat_id: -1001234567890 # Чат ID. -100 префикс, если supergroup.
   topic_id: 41223 # ID основной темы в чате.
   rss_topic_id: 30421 # ID темы для рассылки.
-
-youtube:
-  api_key: "AIzaSyDF4MZIBk29FN-hs362OnuW9c-uk1IGBEg" # Google API для рассылки
-
-vk:
-  api_token: "89ba2f3b89ba2f3b89ba2f3b158aa360b8889ba89ba2f3bef2b2d32a3ed373733769e75" # Токен приложения VK
-  api_version: "5.199" # Версия API
 ```
 
 #### License
