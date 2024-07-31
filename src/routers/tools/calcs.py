@@ -50,11 +50,11 @@ async def send_filter(message: Message):
         C = float(C_str[:-1]) / 1000000000  # Convert nF to F
 
         cut_off_frequency = rc_low_pass_cutoff_frequency(R, C)
-        response_text = 'Частоты среза RC-фильтра: {:.3f} Hz'.format(
+        response_text = '✅Частоты среза RC-фильтра: {:.3f} Hz'.format(
             cut_off_frequency
         )
     except (IndexError, ValueError):
-        response_text = '❕ Пожалуйста, укажите корректные значения R (в kΩ) и C (в nF).\nПример: filter 1k 1n'
+        response_text = '⚠️Укажите корректные значения R (в kΩ) и C (в nF).\nПример: filter 1k 1n'
 
     await process_command(message, 'filter', response_text, ParseMode.HTML)
 
@@ -64,9 +64,9 @@ async def convert_db_to_voltage(message: Message):
     try:
         dB = float(message.text.split()[1])
         voltage_gain = db_to_voltage_ratio(dB)
-        response_text = f'{dB:.3f} dB: {voltage_gain:.3f}'
+        response_text = f'✅Значение: {voltage_gain:.3f} V'
     except (IndexError, ValueError):
-        response_text = '❕ Пожалуйста, укажите допустимое значение dB для преобразования.\nПример: dbV 10.0'
+        response_text = '⚠️Укажите допустимое значение dB для преобразования.\nПример: dbV 10.0'
 
     await process_command(message, 'dbV', response_text, ParseMode.HTML)
 
@@ -76,8 +76,8 @@ async def convert_voltage_to_db(message: Message):
     try:
         voltage_ratio = float(message.text.split()[1])
         dB = voltage_ratio_to_db(voltage_ratio)
-        response_text = f'{voltage_ratio:.3f} V: {dB:.3f}'
+        response_text = f'✅Значение: {dB:.3f} db'
     except (IndexError, ValueError):
-        response_text = '❕ Пожалуйста, укажите допустимое напряжение для преобразования.\nПример: Vdb 10.0'
+        response_text = '⚠️Укажите допустимое напряжение для преобразования.\nПример: Vdb 10.0'
 
     await process_command(message, 'Vdb', response_text, ParseMode.HTML)

@@ -29,7 +29,7 @@ async def process_command(
     if not is_valid_message(message) or not message.text.startswith('/'):
         return
     logger.info(
-        f'✉️Получена команда: /{command} от {message.from_user.username} ({message.from_user.id})'
+        f'✉️ Получена команда: /{command} от {message.from_user.username} ({message.from_user.id})'
     )
     try:
         await message.reply(response, parse_mode=parse_mode)
@@ -45,13 +45,13 @@ async def echo(message: Message):
         return
     try:
         await message.reply(
-            'ℹ️ Неизвестная команда. Напишите /help для получения списка команд.',
+            '⚠️Неизвестная команда. Напишите /help для получения списка команд.',
             parse_mode=ParseMode.HTML,
         )
         logger.info(
-            f'ℹ️ Нераспознанная команда: {message.text} от {message.from_user.username}'
+            f'⚠️ Нераспознанная команда: {message.text} от {message.from_user.username}'
         )
     except TelegramNotFound:
         logger.warning(
-            f'ℹ️ Сообщение удалено: не удалось ответить на неизвестную команду {message.text}'
+            f'⚠️ Сообщение удалено: не удалось ответить на неизвестную команду {message.text}'
         )
