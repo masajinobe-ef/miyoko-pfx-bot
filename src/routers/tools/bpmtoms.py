@@ -15,6 +15,9 @@ router = Router()
 
 
 def bpm_to_ms(bpm):
+    if bpm <= 0:
+        raise ValueError()
+
     one_beat_ms = 60000 / bpm
     note_durations = {
         '1/4': one_beat_ms,
@@ -32,11 +35,16 @@ def bpm_to_ms(bpm):
 async def send_ms(message: Message):
     try:
         bpm = int(message.text.split()[1])
-    except (IndexError, ValueError):
-        response_text = '⚠️ Пожалуйста, укажите значение BPM после команды /ms.\nНапример: /ms 120'
+        note_durations = bpm_to_ms(bpm)
+    except IndexError:
+        response_text = '❕ Пожалуйста, укажите значение BPM после команды /ms.\nНапример: /ms 120'
         await process_command(message, 'ms', response_text, ParseMode.HTML)
         return
-    note_durations = bpm_to_ms(bpm)
+    except ValueError:
+        response_text = '❕ Значение BPM должно быть положительным числом. Пожалуйста, укажите корректное значение.'
+        await process_command(message, 'ms', response_text, ParseMode.HTML)
+        return
+
     response_text = f'Значения длительности нот для BPM = {bpm}:\n'
     for note, duration in note_durations.items():
         response_text += f'{note}: {duration:.3f} ms\n'

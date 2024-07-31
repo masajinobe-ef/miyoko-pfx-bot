@@ -17,14 +17,20 @@ router = Router()
 
 
 def rc_low_pass_cutoff_frequency(R, C):
+    if R <= 0 or C <= 0:
+        raise ValueError()
     return 1 / (2 * math.pi * R * C)
 
 
 def db_to_voltage_ratio(dB):
+    if dB <= 0:
+        raise ValueError()
     return 10 ** (dB / 20)
 
 
 def voltage_ratio_to_db(voltage_ratio):
+    if voltage_ratio <= 0:
+        raise ValueError()
     return 20 * math.log10(voltage_ratio)
 
 
@@ -42,15 +48,14 @@ async def send_filter(message: Message):
 
         R = float(R_str[:-1]) * 1000  # Convert kΩ to Ω
         C = float(C_str[:-1]) / 1000000000  # Convert nF to F
-    except (IndexError, ValueError):
-        response_text = '⚠️ Пожалуйста, укажите значения R (в kΩ) и C (в nF).\nПример: filter 1k 1n'
-        await process_command(message, 'filter', response_text, ParseMode.HTML)
-        return
 
-    cut_off_frequency = rc_low_pass_cutoff_frequency(R, C)
-    response_text = 'Частоты среза RC-фильтра: {:.3f} Hz'.format(
-        cut_off_frequency
-    )
+        cut_off_frequency = rc_low_pass_cutoff_frequency(R, C)
+        response_text = 'Частоты среза RC-фильтра: {:.3f} Hz'.format(
+            cut_off_frequency
+        )
+    except (IndexError, ValueError):
+        response_text = '❕ Пожалуйста, укажите корректные значения R (в kΩ) и C (в nF).\nПример: filter 1k 1n'
+
     await process_command(message, 'filter', response_text, ParseMode.HTML)
 
 
@@ -61,7 +66,7 @@ async def convert_db_to_voltage(message: Message):
         voltage_gain = db_to_voltage_ratio(dB)
         response_text = f'{dB:.3f} dB: {voltage_gain:.3f}'
     except (IndexError, ValueError):
-        response_text = '⚠️ Пожалуйста, укажите допустимое значение dB для преобразования.\nПример: dbV 10.0'
+        response_text = '❕ Пожалуйста, укажите допустимое значение dB для преобразования.\nПример: dbV 10.0'
 
     await process_command(message, 'dbV', response_text, ParseMode.HTML)
 
@@ -73,6 +78,6 @@ async def convert_voltage_to_db(message: Message):
         dB = voltage_ratio_to_db(voltage_ratio)
         response_text = f'{voltage_ratio:.3f} V: {dB:.3f}'
     except (IndexError, ValueError):
-        response_text = '⚠️ Пожалуйста, укажите допустимое напряжение для преобразования.\nПример: Vdb 10.0'
+        response_text = '❕ Пожалуйста, укажите допустимое напряжение для преобразования.\nПример: Vdb 10.0'
 
     await process_command(message, 'Vdb', response_text, ParseMode.HTML)

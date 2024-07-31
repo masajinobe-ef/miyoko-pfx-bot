@@ -9,6 +9,7 @@ from aiogram.types import Message
 
 # Config
 from config import CHAT_ID, TOPIC_ID
+
 # Loguru
 from logger import logger
 
@@ -28,13 +29,13 @@ async def process_command(
     if not is_valid_message(message) or not message.text.startswith('/'):
         return
     logger.info(
-        f'✉️ Получена команда: /{command} от {message.from_user.username} ({message.from_user.id})'
+        f'✉️Получена команда: /{command} от {message.from_user.username} ({message.from_user.id})'
     )
     try:
         await message.reply(response, parse_mode=parse_mode)
     except TelegramNotFound:
         logger.warning(
-            f'⚠️ Сообщение удалено: не удалось ответить на команду /{command}'
+            f'ℹ️ Сообщение удалено: не удалось ответить на команду /{command}'
         )
 
 
@@ -44,13 +45,13 @@ async def echo(message: Message):
         return
     try:
         await message.reply(
-            '⚠️ Неизвестная команда. Напишите /help для получения списка команд.',
+            'ℹ️ Неизвестная команда. Напишите /help для получения списка команд.',
             parse_mode=ParseMode.HTML,
         )
         logger.info(
-            f'⚠️ Нераспознанная команда: {message.text} от {message.from_user.username}'
+            f'ℹ️ Нераспознанная команда: {message.text} от {message.from_user.username}'
         )
     except TelegramNotFound:
         logger.warning(
-            f'⚠️ Сообщение удалено: не удалось ответить на неизвестную команду {message.text}'
+            f'ℹ️ Сообщение удалено: не удалось ответить на неизвестную команду {message.text}'
         )
