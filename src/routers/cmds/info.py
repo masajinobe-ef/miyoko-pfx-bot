@@ -24,10 +24,10 @@ async def send_help(message: Message):
         '⚪ /ltsms - Дилей база LTS\n'
         '\n'
         'Инструменты:\n'
-        '⚪ /ms - Расчёт миллисекунд задержки на основе BPM\nПример: /ms 120\n'
-        '⚪ /filter - Расчёт RC-фильтра. Пример: /filter 1.0k 1.0n\n'
-        '⚪ /dbV - Конвертер db в V. Пример: /dbV 10.0\n'
-        '⚪ /Vdb - Конвертер V в db. Пример: /Vdb 10.0\n'
+        '⚪ /ms - Расчёт миллисекунд задержки на основе BPM\nПример: ms 120\n'
+        '⚪ /filter - Расчёт RC-фильтра. Пример: filter 1.0k 1.0n\n'
+        '⚪ /dbV - Конвертер db в V. Пример: dbV 10.0\n'
+        '⚪ /Vdb - Конвертер V в db. Пример: Vdb 10.0\n'
     )
     await process_command(message, 'help', HELP_TEXT, ParseMode.MARKDOWN)
 

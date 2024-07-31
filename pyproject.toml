@@ -17,6 +17,7 @@ google-api-python-client = "^2.136.0"
 requests = "^2.32.3"
 beautifulsoup4 = "^4.12.3"
 pytz = "^2024.1"
+sqlalchemy = "^2.0.31"
 
 [build-system]
 requires = ["poetry-core"]

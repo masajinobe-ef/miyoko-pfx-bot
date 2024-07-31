@@ -17,7 +17,6 @@ from logger import logger
 # Routers
 from routers.cmds import info
 from routers.parsers.livefans import livefans_affiche
-# from routers.parsers.sigure import sigure_info
 from routers.tools import bpmtoms, calcs, ltsms
 
 # Bot and Dispatcher
@@ -41,9 +40,7 @@ async def main():
         (dp.include_router(bpmtoms.router),)
         # parsers
         asyncio.create_task(livefans_affiche(bot))
-        # asyncio.create_task(
-        #     sigure_info(bot),
-        # )
+
         await dp.start_polling(bot)
     except (KeyboardInterrupt, SystemExit):
         logger.warning(f'⚠️ Отстановлен! {formatted_date}')

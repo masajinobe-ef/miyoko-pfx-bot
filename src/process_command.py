@@ -9,7 +9,6 @@ from aiogram.types import Message
 
 # Config
 from config import CHAT_ID, TOPIC_ID
-
 # Loguru
 from logger import logger
 

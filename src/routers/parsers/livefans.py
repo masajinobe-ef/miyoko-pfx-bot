@@ -3,7 +3,6 @@ Written by masajinobe-ef
 """
 
 import asyncio
-import sqlite3
 from datetime import datetime, timedelta
 
 import pytz
@@ -15,49 +14,30 @@ from loguru import logger
 
 # Config
 from config import CHAT_ID, RSS_TOPIC_ID
+# Database
+from database import LiveFansAffiche, Session, init_db
 
 url = 'https://www.livefans.jp/search?option=1&keyword=%E5%87%9B%E3%81%A8%E3%81%97%E3%81%A6%E6%99%82%E9%9B%A8&genre=all&sort=e1'
 
 
-def init_db():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS livefans_affiche (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            image TEXT,
-            description TEXT,
-            link TEXT UNIQUE
-        )
-    """)
-    conn.commit()
-    conn.close()
-
-
 def save_affiche_to_db(affiche):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+    session = Session()
     try:
-        cursor.execute(
-            """
-            INSERT INTO livefans_affiche (title, image, description, link)
-            VALUES (?, ?, ?, ?)
-            """,
-            (
-                affiche['title'],
-                affiche['image'],
-                affiche['description'],
-                affiche['link'],
-            ),
+        new_affiche = LiveFansAffiche(
+            title=affiche['title'],
+            image=affiche['image'],
+            description=affiche['description'],
+            link=affiche['link'],
         )
-        conn.commit()
+        session.add(new_affiche)
+        session.commit()
     except Exception as e:
         logger.error(
             f'❌ Ошибка при сохранении афиши c livefans.jp в базу данных: {e}'
         )
+        session.rollback()
     finally:
-        conn.close()
+        session.close()
 
 
 def fetch_affiche():
@@ -113,11 +93,11 @@ async def livefans_affiche(bot):
 
 
 def affiche_exists(link):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT 1 FROM livefans_affiche WHERE link = ?', (link,))
-    exists = cursor.fetchone() is not None
-    conn.close()
+    session = Session()
+    exists = (
+        session.query(LiveFansAffiche).filter_by(link=link).first() is not None
+    )
+    session.close()
     return exists
 
 
