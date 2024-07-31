@@ -18,6 +18,7 @@ requests = "^2.32.3"
 beautifulsoup4 = "^4.12.3"
 pytz = "^2024.1"
 sqlalchemy = "^2.0.31"
+aiohttp = ">=3.9.0,<3.10.0"
 
 [build-system]
 requires = ["poetry-core"]
