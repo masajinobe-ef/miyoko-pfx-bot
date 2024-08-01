@@ -8,7 +8,9 @@ with open('configs/config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 # Bot
-API_TOKEN = config['bot']['token']
-CHAT_ID = config['bot']['chat_id']
-TOPIC_ID = int(config['bot']['topic_id'])
-RSS_TOPIC_ID = int(config['bot']['rss_topic_id'])
+API_TOKEN = config['BOT']['API_TOKEN']
+PAYMENTS_TOKEN = config['BOT']['PAYMENTS_TOKEN']
+CHAT_ID = config['BOT']['CHAT_ID']
+TOPIC_ID = int(config['BOT']['TOPIC_ID'])
+FEED_TOPIC_ID = int(config['BOT']['FEED_TOPIC_ID'])
+ECHO_DB = config['BOT']['ECHO_DB'].lower() == 'true'

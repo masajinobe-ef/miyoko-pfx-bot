@@ -8,8 +8,8 @@ from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message
 
-# Commands processing
-from process_command import process_command
+# Command handler
+from command_handler import process_group_commands
 
 router = Router()
 
@@ -29,7 +29,9 @@ async def send_help(message: Message):
         '⚪ /dbV - Конвертер db в V. Пример: dbV 10.0\n'
         '⚪ /Vdb - Конвертер V в db. Пример: Vdb 10.0\n'
     )
-    await process_command(message, 'help', HELP_TEXT, ParseMode.MARKDOWN)
+    await process_group_commands(
+        message, 'help', HELP_TEXT, ParseMode.MARKDOWN
+    )
 
 
 # Event /info
@@ -46,4 +48,6 @@ async def send_info(message: Message):
         '⚪ [GitHub](https://github.com/Priscilla-Custom-Effects)\n'
         '⚪ [YouTube](https://www.youtube.com/@priscilla_eF)\n'
     )
-    await process_command(message, 'info', INFO_TEXT, ParseMode.MARKDOWN)
+    await process_group_commands(
+        message, 'info', INFO_TEXT, ParseMode.MARKDOWN
+    )

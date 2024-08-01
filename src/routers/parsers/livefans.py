@@ -7,29 +7,30 @@ import asyncio
 from datetime import datetime, timedelta
 
 import pytz
-import aiohttp
 
 # Web
 from bs4 import BeautifulSoup
+import aiohttp
 
 # Loguru
 from loguru import logger
 
 # Config
-from config import CHAT_ID, RSS_TOPIC_ID
+from config import CHAT_ID, FEED_TOPIC_ID
 
 # Database
 from database import init_db, session
 
 # Models
-from models import LiveFansAffiche, LiveFansURLs
+from models import LiveFansAffiche, LiveFansURL
 
 
 # Get URLs from Database
 def get_all_urls():
     try:
-        urls = session.query(LiveFansURLs.url).all()
+        urls = session.query(LiveFansURL.url).all()
         return [url[0] for url in urls]
+
     except Exception as e:
         logger.error(f'❌ Ошибка при получении URL из базы данных: {e}')
         return []
@@ -39,13 +40,15 @@ def get_all_urls():
 
 async def livefans_affiche(bot):
     if not os.path.exists('database.db'):
-        init_db()
+        await init_db()
         logger.info(
             'ℹ️ База данных инициализирована впервые. Начинаем проверку новых афиш с livefans.jp.'
         )
+
         await check_and_send_affiches(bot)
     else:
         await check_and_send_affiches(bot)
+
         while True:
             tokyo_tz = pytz.timezone('Asia/Tokyo')
             now = datetime.now(tokyo_tz)
@@ -53,10 +56,10 @@ async def livefans_affiche(bot):
                 hour=0, minute=0, second=0, microsecond=0
             ) + timedelta(days=1)
             wait_time = (next_midnight - now).total_seconds()
-
             logger.info(
-                '⏳ Ожидание до следующей проверки афиш с livefans.jp в полночь по японскому времени.'
+                '⏳ Ожидание до следующей проверки афиш с livefans.jp в полночь\nпо японскому времени.'
             )
+
             await asyncio.sleep(wait_time)
 
             await check_and_send_affiches(bot)
@@ -68,12 +71,9 @@ async def fetch_affiche(url):
             async with session.get(url) as response:
                 response.raise_for_status()
                 soup = BeautifulSoup(await response.text(), 'html.parser')
-
-                # Получаем только первый элемент div
                 element = soup.find(
                     'div', class_=['whiteBack midBox fes', 'whiteBack midBox']
                 )
-
                 affiche = []
                 if element:
                     h3_tag = (
@@ -138,7 +138,6 @@ async def check_and_send_affiches(bot):
     last_sent_links = set()
     existing_affiches = session.query(LiveFansAffiche.link).all()
     existing_links = {affiche[0] for affiche in existing_affiches}
-
     for url in urls:
         new_affiche = await fetch_affiche(url)
         for affiche in new_affiche:
@@ -147,7 +146,6 @@ async def check_and_send_affiches(bot):
                 or affiche['link'] in last_sent_links
             ):
                 continue
-
             await save_affiche_to_db(affiche)
 
             last_sent_links.add(affiche['link'])
@@ -158,7 +156,7 @@ async def check_and_send_affiches(bot):
                 try:
                     await bot.send_message(
                         chat_id=CHAT_ID,
-                        message_thread_id=RSS_TOPIC_ID,
+                        message_thread_id=FEED_TOPIC_ID,
                         text=f'ℹ️ Новая афиша опубликована!\n\n**{affiche["title"]}**\n{affiche["description"]}\n[Ссылка на афишу]({affiche["link"]})',
                         parse_mode='MARKDOWN',
                     )

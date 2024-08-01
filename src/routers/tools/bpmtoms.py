@@ -8,8 +8,8 @@ from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message
 
-# Commands processing
-from process_command import process_command
+# Command handler
+from command_handler import process_group_commands
 
 router = Router()
 
@@ -40,14 +40,18 @@ async def send_ms(message: Message):
         response_text = (
             '⚠️Укажите значение BPM после команды /ms.\nНапример: /ms 120'
         )
-        await process_command(message, 'ms', response_text, ParseMode.HTML)
+        await process_group_commands(
+            message, 'ms', response_text, ParseMode.HTML
+        )
         return
     except ValueError:
         response_text = '⚠️Значение BPM должно быть положительным числом.'
-        await process_command(message, 'ms', response_text, ParseMode.HTML)
+        await process_group_commands(
+            message, 'ms', response_text, ParseMode.HTML
+        )
         return
 
     response_text = f'✅Значения длительности нот для BPM = {bpm}:\n'
     for note, duration in note_durations.items():
         response_text += f'{note}: {duration:.3f} ms\n'
-    await process_command(message, 'ms', response_text, ParseMode.HTML)
+    await process_group_commands(message, 'ms', response_text, ParseMode.HTML)

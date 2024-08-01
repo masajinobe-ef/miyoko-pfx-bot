@@ -2,7 +2,9 @@
 Written by masajinobe-ef
 """
 
+import os
 import asyncio
+import time
 from datetime import datetime
 
 # Aiogram
@@ -13,12 +15,16 @@ from aiogram.enums import ParseMode
 # Config
 from config import API_TOKEN
 
+# Database
+from database import init_db
+
 # Loguru
 from logger import logger
 
 # Routers
-from routers.cmds import info
-from routers.parsers.livefans import livefans_affiche
+from routers.cmds import info, direct
+
+# from routers.parsers.livefans import livefans_affiche
 from routers.tools import bpmtoms, calcs, ltsms
 
 # Bot and Dispatcher
@@ -34,28 +40,37 @@ def now():
     return formatted_date
 
 
+async def save_state():
+    logger.info('Сохранение состояния...')
+
+
 # Lifespan
 async def main():
-    try:
-        logger.info(f'✅ Запущен! {now()}')
+    # Database
+    if not os.path.exists('database.db'):
+        await init_db()
+        logger.info('ℹ️ База данных инициализирована впервые.')
 
-        # cmds
-        (dp.include_router(info.router),)
+    logger.info(f'✅ Запущен! {now()}')
 
-        # tools
-        (dp.include_router(calcs.router),)
-        (dp.include_router(ltsms.router),)
-        (dp.include_router(bpmtoms.router),)
+    # Cmds
+    (dp.include_router(direct.router),)
+    (dp.include_router(info.router),)
 
-        # parsers
-        asyncio.create_task(livefans_affiche(bot))
+    # Tools
+    (dp.include_router(calcs.router),)
+    (dp.include_router(ltsms.router),)
+    (dp.include_router(bpmtoms.router),)
 
-        # Bot polling
-        await dp.start_polling(bot)
+    # Parsers
+    # asyncio.create_task(livefans_affiche(bot))
 
-    except (KeyboardInterrupt, SystemExit):
-        logger.warning(f'❌ Отстановлен! {now()}')
+    # Bot polling
+    await dp.start_polling(bot)
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logger.warning(f'⚠️ Отстановлен! {now()}')

@@ -8,8 +8,8 @@ from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message
 
-# Commands processing
-from process_command import process_command
+# Command handler
+from command_handler import process_group_commands
 
 router = Router()
 
@@ -64,4 +64,4 @@ async def send_ltsms(message: Message):
         '夕景の記憶 | BPM83 / 361ms\n'
     )
     PLACEHOLDER = 'placeholder'
-    await process_command(message, 'ltsms', PLACEHOLDER, ParseMode.HTML)
+    await process_group_commands(message, 'ltsms', PLACEHOLDER, ParseMode.HTML)

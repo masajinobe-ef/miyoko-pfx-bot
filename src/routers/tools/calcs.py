@@ -10,12 +10,13 @@ from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message
 
-# Commands processing
-from process_command import process_command
+# Command handler
+from command_handler import process_group_commands
 
 router = Router()
 
 
+# Calculation
 def rc_low_pass_cutoff_frequency(R, C):
     if R <= 0 or C <= 0:
         raise ValueError()
@@ -53,10 +54,13 @@ async def send_filter(message: Message):
         response_text = '✅Частоты среза RC-фильтра: {:.3f} Hz'.format(
             cut_off_frequency
         )
+
     except (IndexError, ValueError):
         response_text = '⚠️Укажите корректные значения R (в kΩ) и C (в nF).\nПример: filter 1k 1n'
 
-    await process_command(message, 'filter', response_text, ParseMode.HTML)
+    await process_group_commands(
+        message, 'filter', response_text, ParseMode.HTML
+    )
 
 
 @router.message(Command(commands='dbV'))
@@ -65,10 +69,11 @@ async def convert_db_to_voltage(message: Message):
         dB = float(message.text.split()[1])
         voltage_gain = db_to_voltage_ratio(dB)
         response_text = f'✅Значение: {voltage_gain:.3f} V'
+
     except (IndexError, ValueError):
         response_text = '⚠️Укажите допустимое значение dB для преобразования.\nПример: dbV 10.0'
 
-    await process_command(message, 'dbV', response_text, ParseMode.HTML)
+    await process_group_commands(message, 'dbV', response_text, ParseMode.HTML)
 
 
 @router.message(Command(commands='Vdb'))
@@ -77,7 +82,8 @@ async def convert_voltage_to_db(message: Message):
         voltage_ratio = float(message.text.split()[1])
         dB = voltage_ratio_to_db(voltage_ratio)
         response_text = f'✅Значение: {dB:.3f} db'
+
     except (IndexError, ValueError):
         response_text = '⚠️Укажите допустимое напряжение для преобразования.\nПример: Vdb 10.0'
 
-    await process_command(message, 'Vdb', response_text, ParseMode.HTML)
+    await process_group_commands(message, 'Vdb', response_text, ParseMode.HTML)

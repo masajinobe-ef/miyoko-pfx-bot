@@ -4,16 +4,6 @@
 
 **Telegram-бот для сообщества Priscilla FX**
 
-## Описание
-
-Проект использует следующие библиотеки:
-
-- **[Aiogram](https://aiogram.dev)**
-- **[Loguru](https://github.com/Delgan/loguru)**
-- **[Pyyaml](https://github.com/yaml/pyyaml)**
-- **[Requests](https://requests.readthedocs.io/en/latest)**
-- **[Google API](https://github.com/googleapis/google-api-python-client)**
-
 ### Установка
 
 Для работы потребуется [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) и [Python](https://www.python.org)

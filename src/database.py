@@ -3,36 +3,41 @@ Written by masajinobe-ef
 """
 
 # SQLAlchemy
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-# Models
-from models import Base
+# Config
+from config import ECHO_DB
 
 # Loguru
 from logger import logger
 
-
-engine = create_engine('sqlite:///database.db')
-Session = sessionmaker(bind=engine)
-session = Session()
+# Models
+from models import Base
 
 
-# Init Database
-def init_db(db_name='database.db'):
-    engine = create_engine(f'sqlite:///{db_name}')
-    Base.metadata.create_all(engine)
-    logger.info('❕База данных и таблицы успешно инициализированы.')
+DATABASE_URL = 'sqlite+aiosqlite:///database.db'
 
+
+# Init database
+async def init_db(db_name='database.db'):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+        logger.info('❕База данных и таблицы успешно инициализированы.')
+
+
+engine = create_async_engine(DATABASE_URL, echo=ECHO_DB)
+SessionLocal = sessionmaker(
+    bind=engine, class_=AsyncSession, expire_on_commit=False
+)
 
 # Functions
-def is_database_empty(model):
-    count = session.query(model).count()
-    session.close()
-    return count == 0
+# async def is_database_empty(model):
+#     count = session.query(model).count()
+#     session.close()
+#     return count == 0
 
-
-def row_exists(model, **kwargs):
-    exists = session.query(model).filter_by(**kwargs).first() is not None
-    session.close()
-    return exists
+# async def row_exists(model, **kwargs):
+#     exists = session.query(model).filter_by(**kwargs).first() is not None
+#     session.close()
+#     return exists
