@@ -1,6 +1,6 @@
 # Miyoko
 
-<img src="pic.png" alt="pic"/>
+<img src="readme.png" alt="pic" width="512px"/>
 
 ## Описание
 

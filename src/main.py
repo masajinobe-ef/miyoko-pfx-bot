@@ -4,7 +4,6 @@ Written by masajinobe-ef
 
 import os
 import asyncio
-import time
 from datetime import datetime
 
 # Aiogram
@@ -38,10 +37,6 @@ def now():
     now = datetime.now()
     formatted_date = now.strftime('%d/%m/%Y %H:%M:%S')
     return formatted_date
-
-
-async def save_state():
-    logger.info('Сохранение состояния...')
 
 
 # Lifespan

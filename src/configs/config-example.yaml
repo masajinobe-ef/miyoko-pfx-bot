@@ -1,0 +1,7 @@
+BOT:
+  API_TOKEN: "example"
+  PAYMENTS_TOKEN: "example"
+  CHAT_ID: -100
+  TOPIC_ID: 3
+  FEED_TOPIC_ID: 3
+  ECHO_DB: "false"
