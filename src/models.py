@@ -6,10 +6,13 @@ from datetime import datetime, timezone
 
 # SQLAlchemy
 from sqlalchemy import Column, Integer, String, Float, DateTime
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.ext.asyncio import AsyncAttrs
+
 
 # Models
-Base = declarative_base()
+class Base(AsyncAttrs, DeclarativeBase):
+    pass
 
 
 def now():

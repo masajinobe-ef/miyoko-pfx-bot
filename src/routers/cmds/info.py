@@ -18,36 +18,37 @@ router = Router()
 @router.message(Command(commands='help'))
 async def send_help(message: Message):
     HELP_TEXT = (
-        'Информация:\n'
-        '⚪ /help - Список команд\n'
-        '⚪ /info - Полезная информация\n'
-        '⚪ /ltsms - Дилей база LTS\n'
+        '<b>Информация:</b>\n'
+        '● /help – Список команд.\n'
+        '● /info – Полезная информация.\n'
         '\n'
-        'Инструменты:\n'
-        '⚪ /ms - Расчёт миллисекунд задержки на основе BPM\nПример: ms 120\n'
-        '⚪ /filter - Расчёт RC-фильтра. Пример: filter 1.0k 1.0n\n'
-        '⚪ /dbV - Конвертер db в V. Пример: dbV 10.0\n'
-        '⚪ /Vdb - Конвертер V в db. Пример: Vdb 10.0\n'
+        '<b>Расчёты:</b>\n'
+        '● /ms – Миллисекунды задержки на основе BPM <i>(ms 120)</i>.\n'
+        '● /filter – RC-фильтр <i>(filter 1.0k 1.0n)</i>.\n'
+        '● /gain – Voltage Gain по формуле 1 + (R1 + R2) / R3\n<i>(gain 0k 500k 4.7k)</i>.\n'
+        '\n'
+        '<b>Конвертеры:</b>\n'
+        '● /cap – Ёмкости конденсатора <i>(cap 10 u)</i>.\n'
+        '● /dbV – db в V <i>(dbV 10.0)</i>.\n'
+        '● /Vdb – V в db <i>(Vdb 10.0)</i>.\n'
     )
-    await process_group_commands(
-        message, 'help', HELP_TEXT, ParseMode.MARKDOWN
-    )
+    await process_group_commands(message, 'help', HELP_TEXT, ParseMode.HTML)
 
 
 # Event /info
 @router.message(Command(commands='info'))
 async def send_info(message: Message):
     INFO_TEXT = (
-        '✉️ [Связаться с нами](https://t.me/masaji_ef)\n'
-        '❔ [Часто задаваемые вопросы](https://priscillafx.ru/faq)\n'
-        '🌐 [Официальный сайт](https://priscilla-custom-effects.github.io/)\n'
-        'Социальные сети:\n'
-        '⚪ [VK](https://vk.com/priscilla_ef)\n'
-        '⚪ [Instagram](https://www.instagram.com/masajinobe)\n'
-        '⚪ [Twitter](https://twitter.com/priscilla_eF)\n'
-        '⚪ [GitHub](https://github.com/Priscilla-Custom-Effects)\n'
-        '⚪ [YouTube](https://www.youtube.com/@priscilla_eF)\n'
+        '<b>Основное:</b>\n'
+        '✉️ <a href="https://t.me/masaji_ef">Связаться с нами</a>\n'
+        '❔ <a href="https://priscillafx.ru/faq">Часто задаваемые вопросы</a>\n'
+        '🌐 <a href="https://priscilla-custom-effects.github.io/">Официальный сайт</a>\n'
+        '\n'
+        '<b>Социальные сети:</b>\n'
+        '● <a href="https://vk.com/priscilla_ef">VK</a>\n'
+        '● <a href="https://www.instagram.com/masajinobe">Instagram</a>\n'
+        '● <a href="https://twitter.com/priscilla_eF">Twitter</a>\n'
+        '● <a href="https://github.com/Priscilla-Custom-Effects">GitHub</a>\n'
+        '● <a href="https://www.youtube.com/@priscilla_eF">YouTube</a>\n'
     )
-    await process_group_commands(
-        message, 'info', INFO_TEXT, ParseMode.MARKDOWN
-    )
+    await process_group_commands(message, 'info', INFO_TEXT, ParseMode.HTML)

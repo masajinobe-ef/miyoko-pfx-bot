@@ -15,16 +15,17 @@ from aiogram.enums import ParseMode
 from config import API_TOKEN
 
 # Database
-from database import init_db
+# from database import init_db
 
 # Loguru
 from logger import logger
 
 # Routers
-from routers.cmds import info, direct
-
+from routers.tools import calc
+from routers.cmds import info
+# from routers.cmds import direct
 # from routers.parsers.livefans import livefans_affiche
-from routers.tools import bpmtoms, calcs, ltsms
+
 
 # Bot and Dispatcher
 bot = Bot(
@@ -42,20 +43,18 @@ def now():
 # Lifespan
 async def main():
     # Database
-    if not os.path.exists('database.db'):
-        await init_db()
-        logger.info('ℹ️ База данных инициализирована впервые.')
+    # if not os.path.exists('database.db'):
+    #     await init_db()
+    #     logger.info('ℹ️ База данных инициализирована впервые.')
 
     logger.info(f'✅ Запущен! {now()}')
 
     # Cmds
-    (dp.include_router(direct.router),)
     (dp.include_router(info.router),)
+    # (dp.include_router(direct.router),)
 
     # Tools
-    (dp.include_router(calcs.router),)
-    (dp.include_router(ltsms.router),)
-    (dp.include_router(bpmtoms.router),)
+    (dp.include_router(calc.router),)
 
     # Parsers
     # asyncio.create_task(livefans_affiche(bot))

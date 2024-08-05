@@ -8,7 +8,7 @@
 
 ### Установка
 
-Для работы потребуется [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) и [Python](https://www.python.org)
+- Для работы потребуется [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer).
 
 Клонируйте репозиторий:
 

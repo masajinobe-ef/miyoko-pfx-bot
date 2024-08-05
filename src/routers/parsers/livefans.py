@@ -19,7 +19,7 @@ from loguru import logger
 from config import CHAT_ID, FEED_TOPIC_ID
 
 # Database
-from database import init_db, session
+from database import init_db, async_session
 
 # Models
 from models import LiveFansAffiche, LiveFansURL
@@ -28,14 +28,14 @@ from models import LiveFansAffiche, LiveFansURL
 # Get URLs from Database
 def get_all_urls():
     try:
-        urls = session.query(LiveFansURL.url).all()
+        urls = async_session.query(LiveFansURL.url).all()
         return [url[0] for url in urls]
 
     except Exception as e:
         logger.error(f'❌ Ошибка при получении URL из базы данных: {e}')
         return []
     finally:
-        session.close()
+        async_session.close()
 
 
 async def livefans_affiche(bot):
@@ -121,22 +121,22 @@ async def save_affiche_to_db(affiche):
             description=affiche['description'],
             link=affiche['link'],
         )
-        session.add(new_affiche)
-        session.commit()
+        async_session.add(new_affiche)
+        async_session.commit()
 
     except Exception as e:
         logger.error(
             f'❌ Ошибка при сохранении афиши c livefans.jp в базу данных: {e}'
         )
-        session.rollback()
+        async_session.rollback()
     finally:
-        session.close()
+        async_session.close()
 
 
 async def check_and_send_affiches(bot):
     urls = get_all_urls()
     last_sent_links = set()
-    existing_affiches = session.query(LiveFansAffiche.link).all()
+    existing_affiches = async_session.query(LiveFansAffiche.link).all()
     existing_links = {affiche[0] for affiche in existing_affiches}
     for url in urls:
         new_affiche = await fetch_affiche(url)
