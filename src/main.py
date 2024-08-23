@@ -2,7 +2,7 @@
 Written by masajinobe-ef
 """
 
-import os
+# import os
 import asyncio
 from datetime import datetime
 
@@ -23,6 +23,7 @@ from logger import logger
 # Routers
 from routers.tools import calc
 from routers.cmds import info
+from routers.events import events
 # from routers.cmds import direct
 # from routers.parsers.livefans import livefans_affiche
 
@@ -55,6 +56,9 @@ async def main():
 
     # Tools
     (dp.include_router(calc.router),)
+
+    # Events
+    (dp.include_router(events.router),)
 
     # Parsers
     # asyncio.create_task(livefans_affiche(bot))

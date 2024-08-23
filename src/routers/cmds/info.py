@@ -15,7 +15,7 @@ router = Router()
 
 
 # Event /help
-@router.message(Command(commands='help'))
+@router.message(Command(commands='help')) 
 async def send_help(message: Message):
     HELP_TEXT = (
         '<b>Информация:</b>\n'

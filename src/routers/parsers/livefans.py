@@ -22,7 +22,7 @@ from config import CHAT_ID, FEED_TOPIC_ID
 from database import init_db, async_session
 
 # Models
-from models import LiveFansAffiche, LiveFansURL
+from database.models import LiveFansAffiche, LiveFansURL
 
 
 # Get URLs from Database

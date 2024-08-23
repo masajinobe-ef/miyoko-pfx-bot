@@ -1,22 +1,28 @@
-# Miyoko
+#
 
-<img src="readme.png" alt="pic" width="512px"/>
+<p align="center">
+    <img src="docs/img/preview.png" alt="preview" width="512px"/>
+</p>
 
-## Описание
+<p align="center">
+    <b><em>Miyoko</em></b>
+</p>
 
-**Telegram-бот для сообщества Priscilla FX**
+<p align="center">
+    <em>Telegram-бот для сообщества Priscilla FX.</em>
+</p>
 
-### Установка
+## Деплой
 
 - Для работы потребуется [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer).
 
-Клонируйте репозиторий:
+Клонировать репозиторий:
 
 ```sh
 git clone https://github.com/masajinobe-ef/miyoko-pfx-bot.git
 ```
 
-Настройте config.yaml в папке configs:
+Настройте config.yaml:
 
 ```yaml
 BOT:
@@ -28,28 +34,8 @@ BOT:
   ECHO_DB: "false"
 ```
 
-#### Основные характеристики Telegram-бота:
+## License
 
-**Асинхронность**
-
-Использование асинхронных библиотек, таких как aiogram, позволяет боту обрабатывать множество запросов одновременно, что делает его более отзывчивым и эффективным.
-
-**Интеграция с API**
-
-Бот может взаимодействовать с различными API, такими как Google API для получения данных или VK API для интеграции с социальной сетью ВКонтакте.
-
-**Работа с базами данных**
-
-Использование библиотеки sqlalchemy позволяет боту эффективно управлять данными, хранить информацию о пользователях и взаимодействиях.
-
-**Парсинг данных**
-
-Бот может использовать библиотеку beautifulsoup4 для извлечения информации из веб-страниц, что позволяет ему предоставлять пользователям актуальные данные, такие как новости.
-
-**Логирование**
-
-С помощью loguru бот может вести журнал своей работы, что помогает разработчикам отслеживать ошибки и производительность, а также анализировать взаимодействие пользователей с ботом.
-
-#### License
+[![License: GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg?style=for-the-badge)](LICENSE "License")
 
 **This project is licensed under the GPL-3.0 license.**

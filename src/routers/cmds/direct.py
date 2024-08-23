@@ -26,7 +26,7 @@ from logger import logger
 from config import PAYMENTS_TOKEN
 
 # Models
-from models import Payment
+from database.models import Payment
 
 # Command handler
 from command_handler import process_direct_commands, is_group_message

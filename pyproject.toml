@@ -2,11 +2,12 @@
 [tool.poetry]
 name = "miyoko"
 version = "0.1.0"
-description = "Telegram bot for Priscilla FX Community"
+description = "📨 Telegram-bot for Priscilla FX Community"
 authors = ["masajinobe-ef <priscilla.effects@gmail.com>"]
 license = "GPL-3.0"
 readme = "README.md"
 packages = [{ include = "*", from = "src" }]
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -21,9 +22,10 @@ sqlalchemy = "^2.0.31"
 aiohttp = ">=3.9.0,<3.10.0"
 aiosqlite = "^0.20.0"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+# Dev-Deps
+[tool.poetry.group.dev.dependencies]
+commitizen = "^3.27.0"
+
 
 # Ruff
 [tool.ruff]
@@ -36,3 +38,20 @@ indent-style = "space"
 
 [tool.ruff.lint]
 ignore = ["F403"]
+
+
+# Commitizen
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "poetry"
+version = "0.1.0"
+update_changelog_on_bump = true
+major_version_zero = true
+
+
+# Poetry build system
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
